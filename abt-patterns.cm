@@ -1,0 +1,14 @@
+Library
+  signature PATTERN
+  signature PATTERN_UTIL
+  functor Pattern
+  functor PatternUtil
+is
+  lib/cmlib/cmlib.cm
+  lib/sml-abt/abt.cm
+  lib/sml-abt/vector-lib/vector-lib.cm
+
+  src/pattern.sig
+  src/pattern_util.sig
+  src/pattern.fun
+  src/pattern_util.fun
