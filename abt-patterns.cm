@@ -4,9 +4,9 @@ Library
   functor Pattern
   functor PatternUtil
 is
-  lib/cmlib/cmlib.cm
-  lib/sml-abt/abt.cm
-  lib/sml-abt/vector-lib/vector-lib.cm
+  $libs/cmlib/cmlib.cm
+  $libs/sml-abt/abt.cm
+  $libs/sml-abt/vector-lib/vector-lib.cm
 
   src/pattern.sig
   src/pattern_util.sig

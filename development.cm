@@ -1,0 +1,7 @@
+Library
+  signature PATTERN
+  signature PATTERN_UTIL
+  functor Pattern
+  functor PatternUtil
+is
+  abt-patterns.cm (bind:(anchor:libs value:lib)) 
