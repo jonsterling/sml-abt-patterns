@@ -4,4 +4,4 @@ Library
   functor Pattern
   functor PatternUtil
 is
-  abt-patterns.cm (bind:(anchor:libs value:lib)) 
+  abt-patterns.cm (bind:(anchor:libs value:lib))
