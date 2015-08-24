@@ -1,0 +1,201 @@
+\documentclass[11pt]{amsart}
+\usepackage{setspace,url,hyperref}
+\usepackage{amssymb,stmaryrd}
+\usepackage{proof}
+\usepackage[usenames,dvipsnames,svgnames,table]{xcolor}
+\newtheorem{thm}{Theorem}[section]
+\newtheorem{prop}[thm]{Proposition}
+\newtheorem{lem}[thm]{Lemma}
+\newtheorem{cor}[thm]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[thm]{Definition}
+\newtheorem{example}[thm]{Example}
+%\newtheorem{note}[thm]{Note}
+\theoremstyle{remark}
+\newtheorem{remark}[thm]{Remark}
+\numberwithin{equation}{section}
+
+\def\InputModeColorName{MidnightBlue}
+\def\OutputModeColorName{Maroon}
+\newcommand\InputMode[1]{{\color{\InputModeColorName}{#1}}}
+\newcommand\OutputMode[1]{{\color{\OutputModeColorName}{#1}}}
+
+\newcommand\HypJ[2]{#1\ (#2)}
+\newcommand\GenJ[2]{\vert_{#1}\; #2}
+\newcommand\JJ{\mathcal{J}}
+\newcommand\IsVer[1]{\InputMode{#1}\ \mathit{ver}}
+\newcommand\IsTrue[1]{\InputMode{#1}\ \mathit{true}}
+\newcommand\IsProp[1]{\InputMode{#1}\ \mathit{prop}}
+\newcommand\IsSet[1]{\InputMode{#1}\ \mathit{set}}
+\newcommand\EqSet[2]{\InputMode{#1}=\InputMode{#2}\ \mathit{set}}
+\newcommand\Member[2]{\InputMode{#1}\in \InputMode{#2}}
+\newcommand\NotMember[2]{\InputMode{#1}\notin \InputMode{#2}}
+\newcommand\EqMember[3]{\InputMode{#1}=\InputMode{#2}\in \InputMode{#3}}
+\newcommand\Seq[2]{\InputMode{#1}\vdash #2}
+\newcommand\SSeq[2]{\InputMode{#1}\vDash #2}
+\newcommand\Eval[2]{\InputMode{#1}\Rightarrow \OutputMode{#2}}
+
+\newcommand\Nat{\mathbb{N}}
+\newcommand\True{\top}
+\newcommand\False{\bot}
+\newcommand\Imp[2]{#1\supset #2}
+\newcommand\Conj[2]{#1\land #2}
+\newcommand\Disj[2]{#1\lor #2}
+\newcommand\Forall[3]{(\forall #2 \in #1)#3}
+\newcommand\Exists[3]{(\exists #2 \in #1)#3}
+\newcommand\It{\star}
+\newcommand\Lam[2]{(\lambda #1) #2}
+\newcommand\Pair[2]{\langle #1, #2 \rangle}
+\newcommand\Inl[1]{\mathsf{inl}(#1)}
+\newcommand\Inr[1]{\mathsf{inr}(#1)}
+
+\newcommand\Wild{\_}
+
+\newcommand\IsType[1]{\InputMode{#1}\ \mathit{type}}
+\newcommand\IsValence[1]{\InputMode{#1}\ \mathit{valence}}
+\newcommand\IsArity[1]{\InputMode{#1}\ \mathit{arity}}
+\newcommand\IsCtx[1]{\InputMode{#1}\ \mathit{ctx}}
+\newcommand\CtxAppend[3]{\InputMode{#1}\oplus\InputMode{#2}\leadsto\OutputMode{#3}}
+\newcommand\CtxLookup[3]{\InputMode{#1}\ni\InputMode{#2}:\OutputMode{#3}}
+\newcommand\Dom[1]{|#1|}
+
+\newcommand\OPS{\mathcal{O}}
+\newcommand\Arity{\mathfrak{A}}
+
+\newcommand\ChkPat[4]{\InputMode{#1}\mid\OutputMode{#4}\Vdash\InputMode{#2}:\InputMode{#3}}
+\newcommand\pv[1]{\mathfrak{#1}}
+\newcommand\Abs[2]{[#1]#2}
+
+\newcommand\jframe[1]{\framebox{\ensuremath{#1}}}
+
+
+\begin{document}
+
+\title{patterns for abts}
+
+\author{Jonathan Sterling}
+\address{}
+
+\onehalfspacing
+
+\maketitle
+
+We will work with the very simple type systems of abstract binding trees, where
+a type is a valence, or it is a vector of valences.
+
+\begin{gather*}
+  \infer{
+    \IsValence{n}
+  }{
+    \Member{n}{\Nat}
+  }
+  \qquad
+  \infer{
+    \IsArity{(m_0;\dots;m_n)}
+  }{
+    \GenJ{i}{\HypJ{\Member{m_i}{\Nat}}{\InputMode{i} < \InputMode{n}}}
+  }\\[6pt]
+  \infer{
+    \IsType{v}
+  }{
+    \IsValence{v}
+  }
+  \qquad
+  \infer{
+    \IsType{\vec{v}}
+  }{
+    \IsArity{\vec{v}}
+  }
+\end{gather*}
+
+The type system is parameterized over a set of operators $\OPS$ with a
+metaoperation $\Arity$ such that $\GenJ{\vartheta}{\HypJ{\IsArity{\Arity(\vartheta)}}{\Member{\vartheta}{\OPS}}}$.
+
+\begin{gather*}
+  \infer{
+    \IsCtx{\cdot}
+  }{
+  }
+  \qquad
+  \infer{
+    \IsCtx{\Psi, x:\tau}
+  }{
+    \IsCtx{\Psi} &
+    \NotMember{x}{\Dom\Psi}
+  }
+\end{gather*}
+
+The context concatenation judgment \jframe{\CtxAppend{\Psi}{\Psi'}{\Psi''}}
+(presupposing $\IsCtx{\Psi}$, $\IsCtx{\Psi'}$) admits the postsupposition
+$\IsCtx{\Psi'}$.
+
+\begin{gather*}
+  \infer{
+    \CtxAppend{\Psi}{\cdot}{\Psi}
+  }{
+  }
+  \qquad
+  \infer{
+    \CtxAppend{\Psi}{\Psi',x:\tau}{\Psi'',x:\tau}
+  }{
+    \CtxAppend{\Psi}{\Psi'}{\Psi''} &
+    \NotMember{x}{\Dom{\Psi'}}
+  }
+\end{gather*}
+
+The judgment \jframe{\ChkPat{\Psi}{p}{\tau}{\Lambda}} (presupposing
+$\IsCtx{\Psi}$, $\IsType{\tau}$) expresses the checking of patterns
+$\InputMode{p}$ at type $\InputMode{\tau}$ with respect to an intuitionistic
+context $\InputMode{\Psi}$, synthesizing a linear context
+$\OutputMode{\Lambda}$ (admitting the postsupposition $\IsCtx{\Lambda}$).
+
+\begin{gather*}
+  \infer[\text{nil}]{
+    \ChkPat{\Psi}{(\cdot)}{(\cdot)}{\cdot}
+  }{
+  }
+  \qquad
+  \infer[\text{snoc}]{
+    \ChkPat{\Psi}{(\vec{p};p)}{(\vec{v};v)}{\Lambda}
+  }{
+    \ChkPat{\Psi}{(\vec{p})}{(\vec{v})}{\Lambda_1} &
+    \ChkPat{\Psi}{p}{v}{\Lambda_2} &
+    \CtxAppend{\Lambda_1}{\Lambda_2}{\Lambda}
+  }\\[6pt]
+  \infer[\text{wildcard}]{
+    \ChkPat{\Psi}{\Wild}{\tau}{\cdot}
+  }{
+  }
+  \qquad
+  \infer[\text{var}]{
+    \ChkPat{\Psi}{x}{\tau}{\cdot}
+  }{
+    \CtxLookup{\Psi}{x}{\tau}
+  }
+  \qquad
+  \infer[\text{pat-var}]{
+    \ChkPat{\Psi}{\pv{p}}{\tau}{\pv{p}:\tau}
+  }{
+  }\\[6pt]
+  \infer[\text{op}]{
+    \ChkPat{\Psi}{\vartheta(\vec{p})}{0}{\Lambda}
+  }{
+    \Member{\vartheta}{\OPS} &
+    \ChkPat{\Psi}{\vec{p}}{\Arity(\vartheta)}{\Lambda}
+  }
+  \qquad
+  \infer[\text{abs}]{
+    \ChkPat{\Psi}{\Abs{x}{p}}{\tau+1}{\Lambda}
+  }{
+    \ChkPat{\Psi,x:0}{p}{\tau}{\Lambda}
+  }
+\end{gather*}
+
+The linear context $\Lambda$ specifies the \emph{pattern variables} which occur
+in a pattern, and would have to be substituted during unification. On the other
+hand, the intuitionistic context $\Psi$ contains variables which arise from the
+binding structure of the language of patterns, and such variables may occur any
+number of times; in a simpler system that did not contain abstraction
+$\Abs{x}{p}$, the intuitionistic context would be unnecessary.
+
+\end{document}
