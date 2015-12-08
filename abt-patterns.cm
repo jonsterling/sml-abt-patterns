@@ -1,14 +1,3 @@
 Library
-  signature PATTERN
-  signature PATTERN_UTIL
-  functor Pattern
-  functor PatternUtil
 is
   $libs/cmlib/cmlib.cm
-  $libs/sml-abt/abt.cm
-  $libs/sml-abt/vector-lib/vector-lib.cm
-
-  src/pattern.sig
-  src/pattern_util.sig
-  src/pattern.fun
-  src/pattern_util.fun
