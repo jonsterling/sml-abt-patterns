@@ -1,3 +1,7 @@
 Library
+  signature PATTERN
+  functor Pattern
+  signature REWRITE_RULE
+  functor RewriteRule
 is
   abt-patterns.cm (bind:(anchor:libs value:lib))

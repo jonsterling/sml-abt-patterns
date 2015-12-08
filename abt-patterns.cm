@@ -1,3 +1,13 @@
 Library
+  signature PATTERN
+  functor Pattern
+  signature REWRITE_RULE
+  functor RewriteRule
 is
-  $libs/cmlib/cmlib.cm
+  $/basis.cm
+  $libs/sml-typed-abts/abt.cm
+  cmlib.cm
+  src/pattern.sig
+  src/pattern.fun
+  src/rewrite_rule.sig
+  src/rewrite_rule.fun
