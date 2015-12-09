@@ -58,15 +58,6 @@ struct
     structure Spine = Operator.Arity.Valence.Spine
     structure Sort = Operator.Arity.Sort
 
-    fun pointwiseRenaming (is, js) =
-      let
-        fun go [] [] u = u
-          | go (i :: is) (j :: js) u = if Symbol.Eq.eq (i, u) then j else go is js u
-          | go _ _ u = u
-      in
-        go is js
-      end
-
     fun matchOperator (ptheta, theta) =
       (* compare if they are the "same" operator modulo parameters *)
       if Operator.eq (fn _ => true) (ptheta, theta) then
