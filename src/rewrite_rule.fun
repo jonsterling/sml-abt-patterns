@@ -112,7 +112,7 @@ struct
 
     (* we recursively wring out all the metavariables by looking them up in the
      * environment. Another option would be to replace the environment by a
-     * graph of metavariable substitutions, and apply them from the leaves down
+     * tree of metavariable substitutions, and apply them from the leaves down
      * in order. *)
     fun applyEnv env m =
       let
