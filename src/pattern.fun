@@ -7,9 +7,10 @@ struct
 
   datatype 'a argument =
       MVAR of metavariable
-    | PAT of pattern
+    | PAT of 'a
   and 'a view = $@ of operator * 'a argument spine
-  and pattern = IN of pattern view * metacontext
+
+  datatype pattern = IN of pattern view * metacontext
 
   infix $@
 

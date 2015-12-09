@@ -9,7 +9,7 @@ sig
 
   datatype 'a argument =
       MVAR of metavariable
-    | PAT of pattern
+    | PAT of 'a
 
   datatype 'a view = $@ of operator * 'a argument spine
 
