@@ -1,7 +1,10 @@
 Library
   signature PATTERN
-  functor Pattern
+  signature ABT_LINEAR_UNIFICATION
   signature REWRITE_RULE
+
+  functor Pattern
+  functor AbtLinearUnification
   functor RewriteRule
 is
   $/basis.cm
@@ -11,3 +14,5 @@ is
   src/pattern.fun
   src/rewrite_rule.sig
   src/rewrite_rule.fun
+  src/linear_unification.sig
+  src/linear_unification.fun

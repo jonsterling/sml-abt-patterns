@@ -1,6 +1,3 @@
-signature LIST_ABT =
-  ABT where type 'a Operator.Arity.Valence.Spine.t = 'a list
-
 functor Pattern (Abt : LIST_ABT) : PATTERN =
 struct
   open Abt
