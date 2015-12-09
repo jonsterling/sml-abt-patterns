@@ -30,7 +30,7 @@ struct
   (* When [pat] is a pattern and [m] is a closed term without metavariables,
    * then [pat <*> m] is the judgment that [m] unifies with the pattern [pat] *)
   datatype match = <*> of pattern * term
-  infix ~> @ <*>
+  infix ~> $@ <*>
 
   datatype rule = RULE of view
 
@@ -93,7 +93,7 @@ struct
 
     fun unify (pat <*> m) =
       let
-        val (ptheta @ pargs, Theta) = Pattern.out pat
+        val (ptheta $@ pargs, Theta) = Pattern.out pat
         val (theta $ es, tau) = Abt.infer m
         fun go [] [] (rho, env) = (rho, env)
           | go (MVAR mv :: pargs) (e :: es) (rho, env) = go pargs es (rho, extendEnv env (mv, e))
@@ -101,12 +101,12 @@ struct
               let
                 val (rho', env') = unify (pat <*> m)
               in
-                go pargs es (List.concat [rho, rho'], concatEnv (env, env'))
+                go pargs es (rho @ rho', concatEnv (env, env'))
               end
           | go _ _ _ = raise RuleInapplicable
         val (rho, env) = go pargs es ([], MetaEnv.empty)
       in
-        (List.concat [matchOperator (ptheta, theta), rho], env)
+        (matchOperator (ptheta, theta) @ rho, env)
       end
 
 

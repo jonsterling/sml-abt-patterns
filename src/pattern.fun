@@ -8,10 +8,10 @@ struct
   datatype 'a argument =
       MVAR of metavariable
     | PAT of pattern
-  and 'a view = @ of operator * 'a argument spine
+  and 'a view = $@ of operator * 'a argument spine
   and pattern = IN of pattern view * metacontext
 
-  infix @
+  infix $@
 
   structure Error =
   struct
@@ -30,14 +30,14 @@ struct
     Metacontext.concat (Theta, Theta')
     handle Metacontext.NameClash => raise InvalidPattern Error.NON_LINEAR
 
-  fun into (theta @ args) =
+  fun into (theta $@ args) =
     let
       val (vls, tau) = Operator.arity theta
       fun go [] [] = Metacontext.empty
         | go (MVAR mv :: args) (vl :: vls) = extend (go args vls) (mv, vl)
         | go (PAT p :: args) ((([], []), tau) :: vls) =
             let
-              val (theta' @ args', Theta) = out p
+              val (theta' $@ args', Theta) = out p
               val (_, tau') = Operator.arity theta'
               val _ = Operator.Arity.Sort.Eq.eq (tau, tau')
             in
@@ -45,7 +45,7 @@ struct
             end
         | go _ _ = raise InvalidPattern Error.OTHER
     in
-      IN (theta @ args, go args vls)
+      IN (theta $@ args, go args vls)
     end
 
   and out (IN p) = p

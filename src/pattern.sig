@@ -11,7 +11,7 @@ sig
       MVAR of metavariable
     | PAT of pattern
 
-  datatype 'a view = @ of operator * 'a argument spine
+  datatype 'a view = $@ of operator * 'a argument spine
 
   structure Error :
   sig
