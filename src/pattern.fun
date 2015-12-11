@@ -22,11 +22,11 @@ struct
 
   fun extend Theta (mv, vl) =
     Metacontext.extend Theta (mv, vl)
-    handle Metacontext.NameClash => raise InvalidPattern Error.NON_LINEAR
+    handle Metacontext.MergeFailure => raise InvalidPattern Error.NON_LINEAR
 
   fun concat (Theta, Theta') =
     Metacontext.concat (Theta, Theta')
-    handle Metacontext.NameClash => raise InvalidPattern Error.NON_LINEAR
+    handle Metacontext.MergeFailure => raise InvalidPattern Error.NON_LINEAR
 
   fun into (theta $@ args) =
     let
